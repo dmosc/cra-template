@@ -1,11 +1,11 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    timeout: 1200s
+    timeout: 2000s
     args:
       [
         'build',
         '--build-arg',
-        'https://backend-5snxalmwva-uc.a.run.app',
+        'REACT_APP_BACKEND_ENDPOINT=https://backend-5snxalmwva-uc.a.run.app',
         '-t',
         'gcr.io/$PROJECT_ID/default-frontend',
         '-f',
@@ -13,8 +13,10 @@ steps:
         '.',
       ]
   - name: 'gcr.io/cloud-builders/docker'
+    timeout: 2000s
     args: ['push', 'gcr.io/$PROJECT_ID/default-frontend']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    timeout: 2000s
     entrypoint: gcloud
     args:
       [
@@ -30,7 +32,7 @@ steps:
         'managed',
       ]
   - name: 'gcr.io/cloud-builders/docker'
-    timeout: 1200s
+    timeout: 2000s
     args:
       [
         'build',
@@ -41,8 +43,10 @@ steps:
         '.',
       ]
   - name: 'gcr.io/cloud-builders/docker'
+    timeout: 2000s
     args: ['push', 'gcr.io/$PROJECT_ID/default-backend']
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    timeout: 2000s
     entrypoint: gcloud
     args:
       [
