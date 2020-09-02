@@ -1,0 +1,59 @@
+steps:
+  - name: 'gcr.io/cloud-builders/docker'
+    timeout: 1200s
+    args:
+      [
+        'build',
+        '--build-arg',
+        'https://backend-5snxalmwva-uc.a.run.app',
+        '-t',
+        'gcr.io/$PROJECT_ID/default-frontend',
+        '-f',
+        'docker/frontend.Dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/default-frontend']
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run',
+        'deploy',
+        'frontend',
+        '--allow-unauthenticated',
+        '--image',
+        'gcr.io/$PROJECT_ID/default-frontend',
+        '--region',
+        'us-central1',
+        '--platform',
+        'managed',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    timeout: 1200s
+    args:
+      [
+        'build',
+        '-t',
+        'gcr.io/$PROJECT_ID/default-backend',
+        '-f',
+        'docker/backend.Dockerfile',
+        '.',
+      ]
+  - name: 'gcr.io/cloud-builders/docker'
+    args: ['push', 'gcr.io/$PROJECT_ID/default-backend']
+  - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
+    entrypoint: gcloud
+    args:
+      [
+        'run',
+        'deploy',
+        'backend',
+        '--allow-unauthenticated',
+        '--image',
+        'gcr.io/$PROJECT_ID/default-backend',
+        '--region',
+        'us-central1',
+        '--platform',
+        'managed',
+      ]
