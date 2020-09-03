@@ -1,6 +1,5 @@
 steps:
   - name: 'gcr.io/cloud-builders/docker'
-    timeout: 2000s
     args:
       [
         'build',
@@ -12,11 +11,11 @@ steps:
         'docker/frontend.Dockerfile',
         '.',
       ]
+    timeout: 1000s
   - name: 'gcr.io/cloud-builders/docker'
-    timeout: 2000s
     args: ['push', 'gcr.io/$PROJECT_ID/default-frontend']
+    timeout: 1000s
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    timeout: 2000s
     entrypoint: gcloud
     args:
       [
@@ -31,8 +30,8 @@ steps:
         '--platform',
         'managed',
       ]
+    timeout: 1000s
   - name: 'gcr.io/cloud-builders/docker'
-    timeout: 2000s
     args:
       [
         'build',
@@ -42,11 +41,11 @@ steps:
         'docker/backend.Dockerfile',
         '.',
       ]
+    timeout: 1000s
   - name: 'gcr.io/cloud-builders/docker'
-    timeout: 2000s
     args: ['push', 'gcr.io/$PROJECT_ID/default-backend']
+    timeout: 1000s
   - name: 'gcr.io/google.com/cloudsdktool/cloud-sdk'
-    timeout: 2000s
     entrypoint: gcloud
     args:
       [
@@ -61,3 +60,5 @@ steps:
         '--platform',
         'managed',
       ]
+    timeout: 1000s
+timeout: 2500s
